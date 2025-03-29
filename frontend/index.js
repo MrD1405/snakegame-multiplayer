@@ -4,7 +4,13 @@ const FOOD_COLOR='#e66916';
 
 const gameScreen=document.getElementById("gameScreen");
 let canvas,ctx;
+const socket=io('http://localhost:9090');
+socket.on('welcome',array=>{
+    console.log(array);
+})
 
+
+socket.on('gameState',handleGameState);
 const gameState={
     player:{
         pos : {
@@ -62,4 +68,8 @@ function paintPlayer(state,SNAKE_COLOR,size){
     
 }
 
+function handleGameState(gameState){
+    gameState=JSON.parse(gameState);
+    requestAnimationFrame()
+}
 init();
