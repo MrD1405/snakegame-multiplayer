@@ -9,30 +9,9 @@ socket.on('welcome',array=>{
     console.log(array);
 })
 
-
+socket.on('init',handleInit);
 socket.on('gameState',handleGameState);
-const gameState={
-    player:{
-        pos : {
-            x:3,
-            y:10
-        },
-        vel:{
-            x:1,
-            y:0,
-        },
-        snake:[
-            {x:1,y:10},
-            {x:2,y:10},
-            {x:3,y:10}
-        ],
-        food:{
-            x:7,
-            y:7,
-        },
-        gridsize:20,
-    }
-}
+socket.on('gameOver',handleGameOver);
 function init(){
     canvas=document.getElementById('canvas');
     ctx=canvas.getContext('2d');
@@ -40,11 +19,11 @@ function init(){
     ctx.fillStyle=BG_COLOR;
     ctx.fillRect(0,0,canvas.width,canvas.height);
     document.addEventListener('keydown',keydown);
-    paintGame(gameState);
+    //paintGame(gameState);
 }
 
 function keydown(e){
-    console.log(e.keyCode);
+    socket.emit('keydown',e.keyCode);
 }
 
 function paintGame(state){
@@ -69,7 +48,13 @@ function paintPlayer(state,SNAKE_COLOR,size){
 }
 
 function handleGameState(gameState){
-    gameState=JSON.parse(gameState);
-    requestAnimationFrame()
+    // gameState=JSON.parse(gameState);
+    requestAnimationFrame(()=> paintGame(gameState));
 }
-init();
+function handleInit(){
+    init();
+}
+function handleGameOver(){
+    alert("YOU LOSE!");
+}
+
